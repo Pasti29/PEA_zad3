@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include "Menu.h"
 #include "ArrayClass.h"
+#include "GeneticAlgorithm.h"
 
 using namespace std;
 
@@ -9,7 +10,7 @@ int N;
 
 int main() {
 
-	int option, stop = 30, populationSize = 0, mutationMethod = 1, crossoverMethod = 1;
+	int option, stop = 30, populationSize = 100, mutationMethod = 1, crossoverMethod = 1;
 	double mutationVar = 0.1, crossoverVar = 0.8;
 
 	while (true) {
@@ -42,7 +43,14 @@ int main() {
 			crossoverMethod = Menu::showCrossoverMethodMenu(crossoverMethod);
 			break;
 		case 8:
-			//TODO: Wykonaj algorytm
+			if (ARRAY == nullptr) {
+				cout << "\tNiezainicjalozowano tabeli." << endl;
+			} else {
+				for (int i = 0; i < 1; i++) {
+					GeneticAlgorithm ga(ARRAY, N, stop, populationSize, mutationVar, crossoverVar, mutationMethod, crossoverMethod);
+					ga.findPath();
+				}
+			}
 			break;
 		case 9:
 			if (ARRAY != nullptr) {

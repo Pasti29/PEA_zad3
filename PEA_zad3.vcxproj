@@ -140,11 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArrayClass.cpp" />
+    <ClCompile Include="GeneticAlgorithm.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayClass.h" />
+    <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -24,6 +24,9 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="GeneticAlgorithm.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayClass.h">
@@ -31,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Pliki źródłowe</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneticAlgorithm.h">
+      <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
