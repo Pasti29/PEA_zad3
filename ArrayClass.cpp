@@ -6,11 +6,11 @@
 
 // Funkcja tworzy oraz wypełnia tabelę danymi z pliku
 int **ArrayClass::createArrayFromFile(int **array, int &N) {
-	string fileName;
-	string ignoredLines;
-	cout << "\tPodaj nazwe pliku (z rozszerzeniem): ";
-	cin >> fileName;
-	ifstream file(fileName);
+	std::string fileName;
+	std::string ignoredLines;
+	std::cout << "\tPodaj nazwe pliku (z rozszerzeniem): ";
+	std::cin >> fileName;
+	std::ifstream file(fileName);
 	int var;
 	if (file.is_open()) {
 
@@ -23,7 +23,7 @@ int **ArrayClass::createArrayFromFile(int **array, int &N) {
 			file.ignore(INT_MAX, '\n');
 		}
 		if (file.fail()) {
-			cout << "\tBlad pliku - ODCZYT DLUGOSCI" << endl;
+			std::cout << "\tBlad pliku - ODCZYT DLUGOSCI\n";
 		} else {
 			array = new int *[N];
 			for (int i = 0; i < N; i++) {
@@ -32,7 +32,7 @@ int **ArrayClass::createArrayFromFile(int **array, int &N) {
 					file >> var;
 					array[i][j] = var;
 					if (file.fail()) {
-						cout << "\tBlad pliku - ODCZYT TABLICY" << endl;
+						std::cout << "\tBlad pliku - ODCZYT TABLICY\n";
 						break;
 					}
 				}

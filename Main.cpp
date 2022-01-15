@@ -3,8 +3,6 @@
 #include "ArrayClass.h"
 #include "GeneticAlgorithm.h"
 
-using namespace std;
-
 int** ARRAY = nullptr;
 int N;
 
@@ -21,7 +19,7 @@ int main() {
 				ARRAY = ArrayClass::destroyArray(ARRAY, N);
 			}
 			ARRAY = ArrayClass::createArrayFromFile(ARRAY, N);
-			cout << "\t";
+			std::cout << "\t";
 			system("pause");
 			break;
 		case 2:
@@ -44,9 +42,9 @@ int main() {
 			break;
 		case 8:
 			if (ARRAY == nullptr) {
-				cout << "\tNiezainicjalozowano tabeli." << endl;
+				std::cout << "\tNiezainicjalozowano tabeli.\n";
 			} else {
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < 10; i++) {
 					GeneticAlgorithm ga(ARRAY, N, stop, populationSize, mutationVar, crossoverVar, mutationMethod, crossoverMethod);
 					ga.findPath();
 				}
@@ -56,7 +54,7 @@ int main() {
 			if (ARRAY != nullptr) {
 				ARRAY = ArrayClass::destroyArray(ARRAY, N);
 			}
-			cout << "\t";
+			std::cout << "\t";
 			system("pause");
 			return 0;
 		default:
