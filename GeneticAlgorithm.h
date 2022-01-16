@@ -32,9 +32,11 @@ private:
 	int minPathId(std::vector<pathInfo> pool);
 	std::vector<pathInfo> tournament(std::vector<pathInfo> population);
 	std::tuple<pathInfo, pathInfo> crossoverPMX(pathInfo parent1, pathInfo parent2);
+	void mutationInversion(pathInfo& chromosome);
+	int findBest(std::vector<pathInfo> population);
 
 public:
-	void findPath();
+	int findPath();
 
 };
 

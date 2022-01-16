@@ -39,7 +39,7 @@ int Menu::showPopulationMenu(int var) {
 	std::cout << "Wielkosc populacji (obecnie " << var << "): ";
 	std::cin >> var;
 	std::cout << "\t";
-	system("pause");
+	//system("pause");
 	return var;
 }
 

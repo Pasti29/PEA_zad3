@@ -77,7 +77,7 @@ std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector
 	matingPool.reserve(population.size());
 
 	std::vector<pathInfo> tournamentPool;
-	int tournamentSize = populationSize / 10;
+	int tournamentSize = 5 * populationSize / 100;
 	tournamentPool.reserve(tournamentSize);
 
 	for (int i = 0; i < population.size(); i++) {
@@ -123,18 +123,6 @@ std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo> GeneticAlgori
 
 	for (int i = 0; i < N; i++) {
 		if (i >= k1 && i <= k2) continue;
-
-		//child1.path[i] = parent1.path[i];
-		//auto result = child1Count.insert({ child1.path[i], 1 });
-		//if (result.second == false) {
-		//	result.first->second++;
-		//}
-
-		//child2.path[i] = parent2.path[i];
-		//result = child2Count.insert({ child2.path[i], 1 });
-		//if (result.second == false) {
-		//	result.first->second++;
-		//}
 
 		auto p1 = std::find(child1.path.begin(), child1.path.end(), parent1.path[i]);
 		if (p1 == child1.path.end()) {
@@ -199,36 +187,100 @@ std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo> GeneticAlgori
 			}
 		}
 	}
-
-	/*for (auto& key : child1Count) {
-		if (key.second > 1) {
-			auto search = std::find(child1.path.begin(), child1.path.begin() + k1, key.first);
-			if (search == child1.path.begin() + k1) search = std::find(child1.path.begin() + k2 + 1, child1.path.end(), key.first);
-
-		}
-	}*/
 	child1.cost = calcPathCost(child1.path);
 	child2.cost = calcPathCost(child2.path);
+
 	return { child1, child2 };
 }
 
-void GeneticAlgorithm::findPath() {
+void GeneticAlgorithm::mutationInversion(pathInfo& chromosome) {
+	auto rng = std::default_random_engine{ rd() };
+	std::uniform_int_distribution<int> distrubution(0, N - 1);
+	auto random = bind(distrubution, rng);
+
+	int k1, k2;
+	k1 = random();
+	do {
+		k2 = random();
+	} while (k1 == k2);
+	if (k2 < k1) {
+		int tmp = k1;
+		k1 = k2;
+		k2 = tmp;
+	}
+
+	for (int i = 0; i <= (k2 - k1 + 1) / 2; i++) {
+		int tmp = chromosome.path[k1 + i];
+		chromosome.path[k1 + i] = chromosome.path[k2 - i];
+		chromosome.path[k2 - i] = tmp;
+	}
+
+	chromosome.cost = calcPathCost(chromosome.path);
+}
+
+int GeneticAlgorithm::findBest(std::vector<pathInfo> population) {
+	int min = INT_MAX;
+	for (pathInfo route : population) {
+		if (min > route.cost) {
+			min = route.cost;
+		}
+	}
+	return min;
+}
+
+int GeneticAlgorithm::findPath() {
 	long long int frequency, start;
 	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
 
+	std::vector<int> bestInGeneration;
+
 	std::vector<pathInfo> population;
 	population.reserve(populationSize);
+	int oldPopulationSize = populationSize;
 	setStartPopulation(population);
 
-	std::vector<pathInfo> matingPool;
-	matingPool.reserve(population.size());
-	pathInfo child1, child2;
+	std::vector<pathInfo> newGeneration;
+	newGeneration.reserve(population.size());
+	pathInfo parent1, parent2, child1, child2;
+
+	auto rng = std::default_random_engine{ rd() };
+	std::uniform_real_distribution<> distribution(0, 1);
+	auto randomReal = bind(distribution, rng);
+
+	
 
 	start = read_QPC();
-	while ((read_QPC() - start) / frequency < stop) {
-		matingPool = tournament(population);
-		std::tie(child1, child2) = crossoverPMX(population[0], population[1]);
+	while ((read_QPC() - start) / frequency < stop && population.size() >= 2) {
+		bestInGeneration.push_back(findBest(population));
+		//std::cout << bestInGeneration.back() << " " << population.size() << "\n";
+
+		population = tournament(population);
+
+		do {
+			int index = rng() % population.size();
+			parent1 = population[index];
+			population.erase(population.begin() + index);
+			index = rng() % population.size();
+			parent2 = population[index];
+			population.erase(population.begin() + index);
+
+			if (randomReal() <= crossoverVar) {
+				std::tie(child1, child2) = crossoverPMX(parent1, parent2);
+				if (randomReal() <= mutationVar) {
+					mutationInversion(child1);
+				}
+				if (randomReal() <= mutationVar) {
+					mutationInversion(child2);
+				}
+				newGeneration.push_back(child1);
+				newGeneration.push_back(child2);
+			}
+		} while (population.size() >= 2);
+		population = newGeneration;
+		oldPopulationSize = population.size();
+		newGeneration.clear();
 
 	}
-
+	return bestInGeneration.back();
+	//system("pause");
 }
