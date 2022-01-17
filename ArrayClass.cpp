@@ -1,10 +1,8 @@
-//
-// Created by karol on 15.12.2021.
-//
-
 #include "ArrayClass.h"
 
-// Funkcja tworzy oraz wypełnia tabelę danymi z pliku
+/*
+	Funkcja tworzy oraz wypełnia tabelę danymi z pliku
+*/
 int **ArrayClass::createArrayFromFile(int **array, int &N) {
 	std::string fileName;
 	std::string ignoredLines;
@@ -41,12 +39,29 @@ int **ArrayClass::createArrayFromFile(int **array, int &N) {
 	}
 	return array;
 }
-
-// Funkcja niszczy tabelę dynamiczną
+/*
+	Funkcja niszczy tabelę dynamiczną
+*/
 int **ArrayClass::destroyArray(int **array, int N) {
 	for (int i = 0; i < N; i++) {
 		delete[] array[i];
 	}
 	delete[] array;
 	return nullptr;
+}
+/*
+	Funkcja wyświetla macierz sąsiedztwa
+*/
+void ArrayClass::showArray(int** array, int N) {
+	std::cout << "\nN = " << N << "\n\n";
+	for (int i = 0; i < N; i++) std:: cout << "-------";
+	std::cout << "\n";
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			std::cout << "|  " << std::left << std::setw(4) << array[i][j];
+		}
+		std::cout << "|\n";
+		for (int j = 0; j < N; j++) std::cout << "-------";
+		std::cout << "\n";
+	}
 }

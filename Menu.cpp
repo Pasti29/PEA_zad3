@@ -1,7 +1,3 @@
-//
-// Created by karol on 15.12.2021.
-//
-
 #include "Menu.h"
 
 int Menu::showMainMenu() {
@@ -19,7 +15,7 @@ int Menu::showMainMenu() {
 	std::cout << "4.Ustawienie wspolczynnika mutacji\n";
 	std::cout << "5.Ustawienie wspolczynnika krzyzowania\n";
 	std::cout << "6.Wybor metody mutacji\n";
-	std::cout << "7.Wybor metody krzyzowania\n";
+	// std::cout << "7.Wybor metody krzyzowania\n";
 	std::cout << "8.Uruchomienie algorytmu\n";
 	std::cout << "9.Wyjscie z programu\n";
 
@@ -61,8 +57,8 @@ double Menu::showCrossoverVarMenu(double var) {
 
 int Menu::showMutationMethodMenu(int var) {
 	std::cout << "Metoda mutacji (obecnie " << var << "):\n"
-		 << "\t1.\n"
-		 << "\t2.\n\t";
+		 << "\t1. inversion - wybiera losowy podciagi miast i zamienia ich kolejnosc\n"
+		 << "\t2. transposition - zamienia dwa losowo wybrane miasta\n\t";
 	std::cin >> var;
 	std::cout << "\t";
 	system("pause");
@@ -71,7 +67,7 @@ int Menu::showMutationMethodMenu(int var) {
 
 int Menu::showCrossoverMethodMenu(int var) {
 	std::cout << "Metoda krzyzowania (obecnie " << var << "):\n"
-		<< "\t1.\n"
+		<< "\t1. PMX\n"
 		<< "\t2.\n\t";
 	std::cin >> var;
 	std::cout << "\t";

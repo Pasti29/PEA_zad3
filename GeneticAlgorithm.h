@@ -29,10 +29,11 @@ private:
 	static long long int read_QPC();
 	int calcPathCost(std::vector<int> path);
 	void setStartPopulation(std::vector<pathInfo>& population);
-	int minPathId(std::vector<pathInfo> pool);
+	int minPathId(std::vector<pathInfo> sample);
 	std::vector<pathInfo> tournament(std::vector<pathInfo> population);
 	std::tuple<pathInfo, pathInfo> crossoverPMX(pathInfo parent1, pathInfo parent2);
 	void mutationInversion(pathInfo& chromosome);
+	void mutationTransposition(pathInfo& chromosome);
 	int findBest(std::vector<pathInfo> population);
 
 public:

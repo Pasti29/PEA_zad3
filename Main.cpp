@@ -26,7 +26,7 @@ int main() {
 	str.erase(0, 4);
 	str.pop_back();
 
-	str = "result_" + str + ".csv";
+	str = "Wyniki\\result_" + str + ".csv";
 
 	std::ofstream fileResult;
 	fileResult.open(str);
@@ -41,6 +41,7 @@ int main() {
 				ARRAY = ArrayClass::destroyArray(ARRAY, N);
 			}
 			ARRAY = ArrayClass::createArrayFromFile(ARRAY, N);
+			ArrayClass::showArray(ARRAY, N);
 			std::cout << "\t";
 			system("pause");
 			break;
@@ -59,12 +60,13 @@ int main() {
 		case 6:
 			mutationMethod = Menu::showMutationMethodMenu(mutationMethod);
 			break;
-		case 7:
-			crossoverMethod = Menu::showCrossoverMethodMenu(crossoverMethod);
-			break;
+		//case 7:
+		//	crossoverMethod = Menu::showCrossoverMethodMenu(crossoverMethod);
+		//	break;
 		case 8:
 			if (ARRAY == nullptr) {
 				std::cout << "\tNiezainicjalozowano tabeli.\n";
+				system("pause");
 			} else {
 				for (int i = 0; i < 10; i++) {
 					fileResult << i + 1 << "," << N << "," << populationSize << "," << stop << "," << mutationVar << "," << crossoverVar << "," << mutationMethod << "," << crossoverMethod;

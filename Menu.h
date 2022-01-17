@@ -1,9 +1,4 @@
-//
-// Created by karol on 15.12.2021.
-//
-
-#ifndef PEA_ZAD2_MENU_H
-#define PEA_ZAD2_MENU_H
+#pragma once
 
 #include <iostream>
 
@@ -18,5 +13,3 @@ public:
 	static int showCrossoverMethodMenu(int var);
 
 };
-
-#endif //PEA_ZAD2_MENU_H
