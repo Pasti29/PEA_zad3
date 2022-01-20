@@ -54,7 +54,7 @@ int GeneticAlgorithm::calcPathCost(std::vector<int> path) {
 }
 /*
 	Funkcja tworząca pierwszą populację.
-	Początkowa populacji jest wielkości populationSize, a chromosomy są losowe.
+	Początkowa populacji jest wielkości populationSize, a osobniki są losowe.
 */
 void GeneticAlgorithm::setStartPopulation(std::vector<pathInfo>& population) {
 	auto rng = std::default_random_engine{ rd() };
@@ -67,20 +67,21 @@ void GeneticAlgorithm::setStartPopulation(std::vector<pathInfo>& population) {
 	}
 
 	for (int i = 0; i < populationSize; i++) {
-		pathInfo newChromosome;
-		newChromosome.path = base;
-		std::shuffle(std::begin(newChromosome.path), std::end(newChromosome.path), rng);
-		newChromosome.cost = calcPathCost(newChromosome.path);
-		population.push_back(newChromosome);
+		pathInfo newIndividual;
+		newIndividual.path = base;
+		std::shuffle(std::begin(newIndividual.path), std::end(newIndividual.path), rng);
+		newIndividual.cost = calcPathCost(newIndividual.path);
+		population.push_back(newIndividual);
 	}
 }
 /*
-	Funkcja pomocnicza dla funkcji tournament, znajdującą chromosom o najniższym koszcie.
+	Funkcja pomocnicza dla funkcji tournament, znajdującą
+	osobnika o najniższym koszcie.
 
 	Wejścia:
-		sample - pula chromosomów
+		sample - pula osobników
 	Wyjście:
-		index - indeks chromosomu o najkrótszym koszcie
+		index - indeks osobnika o najkrótszym koszcie
 */
 int GeneticAlgorithm::minPathId(std::vector<pathInfo> sample) {
 	int min = INT_MAX;
@@ -101,13 +102,12 @@ int GeneticAlgorithm::minPathId(std::vector<pathInfo> sample) {
 	Wejścia:
 		population - populacja zgłoszona do turnieju
 	Ważne zmienne:
-		tournamentPool - pula chromosomów wybrania do turnieju
+		tournamentPool - pula osobników wybrania do turnieju
 		tournamentSize - wielkość puli tournamentPool, wyznaczona na 20% wielkości populacji
 	Wyjścia:
 		matingPool - końcowa populacja wybrania do krzyżowania
 
-	Funkcja losowo wybiera chromosomy do turnieju, a następnie wywołuje funkcję minPathId, która
-	zwraca indeks chromosomu o najniższym koszcie. Liczba wykonanych turniejów jest taka sama
+	Funkcja losowo wybiera osobników do turnieju, a następnie wywołuje funkcję minPathId, która zwraca indeks osobnika o najniższym koszcie. Liczba wykonanych turniejów jest taka sama
 	jak wielkość populacji.
 */
 std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector<pathInfo> population) {
@@ -135,7 +135,7 @@ std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector
 	Funkcja wykonująca metodę krzyżowania PMX - Partially Mapped Crossover
 
 	Wejścia:
-		parent1, parent2 - chromosomy wybrane do krzyżowania
+		parent1, parent2 - osobniki wybrane do krzyżowania
 	Ważne zmienne:
 		random - zwraca losową całkowitą liczbę z przedziału <0, N - 1>,
 			gdzie N - wielkość tablicy sąsiedztwa
@@ -143,22 +143,20 @@ std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector
 		map1, map2 - struktura mapy działająca jak tabela odwzorowań (map2 jest odwrotnością map1, czyli
 			klucze w map1 są wartościami w map2 itp.)
 		child1Count, child2Count - struktura mapy oznaczająca ile razy miasto znajduje się na ścieżce
-			chromosomu potomnego
+			osobnika potomnego
 	Wyjścia:
-		child1, child2 - chromosomy potomne utworzone z krzyżowania
+		child1, child2 - osobniki potomne utworzone z krzyżowania
 
 	Funkcja wykonuje się według tego schematu:
 		1. Wylosowanie dwóch miast
-		2. Wykonanie transpozycji w podciągu od k1 do k2, dodanie elementów do tablicy odwzorowań i odnotowanie
-			zmian liczności w child1Count i child2Count
+		2. Wykonanie transpozycji w podciągu od k1 do k2, dodanie elementów do tablicy odwzorowań i odnotowanie zmian liczności w child1Count i child2Count
 		3. Przepisanie z rodzica do potomka tych miast, które nie zostały wpisane w kroku 2
 		4. Dla miejsca w ścieżce, które nie maja jeszcze przypisanego miasta, wstawiamy miasto zgodnie z tabelą odwzorowań
-		5. Jeżeli dodanie miasta oznaczałoby powstanie duplikatu w ścieżce, to ponownie wstawiane jest miasto zgodnie
-			z tabelą odwzorowań
+		5. Jeżeli dodanie miasta oznaczałoby powstanie duplikatu w ścieżce, to ponownie wstawiane jest miasto zgodnie z tabelą odwzorowań
 		6. Wracaj do kroku 5, dopóki dodanie miasta nie oznacza utworzenia duplikatu
 		7. Wracaj do kroku 4, dopóki wszystkie miejsca w ścieżce nie będą miały przydzielonego miasta
-		8. Oblicz koszt utworzonych chromosomów potomnych
-		9. Zwróć chromosomy potomne
+		8. Oblicz koszt utworzonych osobników potomnych
+		9. Zwróć osobniki potomne
 */
 std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo> GeneticAlgorithm::crossoverPMX(pathInfo parent1, pathInfo parent2) {
 	auto rng = std::default_random_engine{ rd() };
@@ -266,15 +264,15 @@ std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo> GeneticAlgori
 	Funkcja wykonująca metodę mutacji - inversion.
 
 	Wejścia:
-		chromosome - chromosom, który ma zostać poddany mutacji
+		individual - osobnik, który ma zostać poddany mutacji
 	Ważne zmienne:
-		random - zwraca losową całkowitą liczbę z przedziału <0, N - 1>,
+		random - zwraca losową całkowitą liczbę z przedziału <0, N-1>,
 			gdzie N - wielkość tablicy sąsiedztwa
 		k1, k2 - losowe miasta
 
 	Funkcja wybiera losowy podciąg (od k1 do k2 ) miast i zamienia ich kolejność.
 */
-void GeneticAlgorithm::mutationInversion(pathInfo& chromosome) {
+void GeneticAlgorithm::mutationInversion(pathInfo& individual) {
 	auto rng = std::default_random_engine{ rd() };
 	std::uniform_int_distribution<int> distrubution(0, N - 1);
 	auto random = bind(distrubution, rng);
@@ -291,26 +289,26 @@ void GeneticAlgorithm::mutationInversion(pathInfo& chromosome) {
 	}
 
 	for (int i = 0; i <= (k2 - k1 + 1) / 2; i++) {
-		int tmp = chromosome.path[k1 + i];
-		chromosome.path[k1 + i] = chromosome.path[k2 - i];
-		chromosome.path[k2 - i] = tmp;
+		int tmp = individual.path[k1 + i];
+		individual.path[k1 + i] = individual.path[k2 - i];
+		individual.path[k2 - i] = tmp;
 	}
 
-	chromosome.cost = calcPathCost(chromosome.path);
+	individual.cost = calcPathCost(individual.path);
 }
 /*
 	Funkcja wykonująca metodę mutacji - transposition.
 
 	Wejścia:
-		chromosome - chromosom, który ma zostać poddany mutacji
+		individual - osobnik, który ma zostać poddany mutacji
 	Ważne zmienne:
-		random - zwraca losową całkowitą liczbę z przedziału <0, N - 1>,
+		random - zwraca losową całkowitą liczbę z przedziału <0, N-1>,
 			gdzie N - wielkość tablicy sąsiedztwa
 		k1, k2 - losowe miasta
 
 	Funkcja zamienia dwa losowo wybrane miasta miejscami.
 */
-void GeneticAlgorithm::mutationTransposition(pathInfo& chromosome) {
+void GeneticAlgorithm::mutationTransposition(pathInfo& individual) {
 	auto rng = std::default_random_engine{ rd() };
 	std::uniform_int_distribution<int> distrubution(0, N - 1);
 	auto random = bind(distrubution, rng);
@@ -326,17 +324,17 @@ void GeneticAlgorithm::mutationTransposition(pathInfo& chromosome) {
 		k2 = tmp;
 	}
 
-	int tmp = chromosome.path[k1];
-	chromosome.path[k1] = chromosome.path[k2];
-	chromosome.path[k2] = tmp;
+	int tmp = individual.path[k1];
+	individual.path[k1] = individual.path[k2];
+	individual.path[k2] = tmp;
 
-	chromosome.cost = calcPathCost(chromosome.path);
+	individual.cost = calcPathCost(individual.path);
 }
 /*
-	Funkcja zwraca najniższy koszt wśród chromosomów z populacji.
+	Funkcja zwraca najniższy koszt wśród osobników z populacji.
 
 	Wejścia:
-		population - populacja chromosomów
+		population - populacja osobników
 	Wyjścia:
 		min - minimalny koszt
 */
@@ -353,8 +351,8 @@ int GeneticAlgorithm::findBest(std::vector<pathInfo> population) {
 	Główna funkcja programu.
 
 	Ważne zmienne:
-		population - populacja chromosomów
-		newGeneration - nowa generacja chromosomów
+		population - populacja osobników
+		newGeneration - nowa generacja osobników
 		parent1, parent2 - rodzice wybrani do krzyżowania
 		child1, child2 - potomkowie otrzymani z krzyżowania
 		randomReal - zwraca losową rzeczywistą liczbę z zakresu <0, 1>
@@ -363,12 +361,12 @@ int GeneticAlgorithm::findBest(std::vector<pathInfo> population) {
 		bestInGeneration.back() - znaleziony przez algorytm najniższy koszt
 
 	Funkcja wykonuje się według tego schematu:
-		1. Utworzenie populacji początkowych chromosomów
+		1. Utworzenie populacji początkowych osobników
 		2. Sprawdzenie warunku zatrzymania
-			2.1. Selekcja turniejowa chromosomów - wybranie populacji macierzystej
-				2.2.1. Krzyżowanie losowych chromosomów (zależy od prawdopodobieństwa w crossoverVal)
-				2.2.2. Mutacja otrzymanych chromosomów (zależy od prawdopodobieństwa w mutationVal)
-				2.2.3. Wróć do kroku 2.2.1 w populacji znajdują się jeszcze chromosomy do krzyżowania
+			2.1. Selekcja turniejowa osobników - wybranie populacji macierzystej
+				2.2.1. Krzyżowanie losowych osobników (zależy od prawdopodobieństwa w crossoverVal)
+				2.2.2. Mutacja otrzymanych osobników (zależy od prawdopodobieństwa w mutationVal)
+				2.2.3. Wróć do kroku 2.2.1 w populacji znajdują się jeszcze osobniki do krzyżowania
 			2.2 Utworzenie nowej populacji
 			2.3 Powrót do kroku 2
 		3. Zwrócenie znalezionego najniższego kosztu
