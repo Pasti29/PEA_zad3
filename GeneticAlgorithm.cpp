@@ -1,17 +1,17 @@
 #include "GeneticAlgorithm.h"
 
 /*
-	Konstruktor inicjalizuj¹cy wszystkie potrzebne zmienne.
+	Konstruktor inicjalizujÄ…cy wszystkie potrzebne zmienne.
 
-	Wejœcia:
-		array - tablica s¹siedztwa
-		N - wielkoœæ tablicy array
-		stop - liczba oznaczaj¹ca kryterium stopu w sekundach
-		populationSize - wielkoœæ populacji pocz¹tkowej
-		mutationVar - prawdopodobieñstwo mutacji
-		crossoverVar - prawdopodobieñstwo krzy¿owania
-		mutationMethod - wartoœæ oznaczaj¹ca wybran¹ metodê mutacji
-		crossoverMethod - wartoœæ oznaczaj¹ca wybran¹ metodê mutacji
+	WejÅ›cia:
+		array - tablica sÄ…siedztwa
+		N - wielkoÅ›Ä‡ tablicy array
+		stop - liczba oznaczajÄ…ca kryterium stopu w sekundach
+		populationSize - wielkoÅ›Ä‡ populacji poczÄ…tkowej
+		mutationVar - prawdopodobieÅ„stwo mutacji
+		crossoverVar - prawdopodobieÅ„stwo krzyÅ¼owania
+		mutationMethod - wartoÅ›Ä‡ oznaczajÄ…ca wybranÄ… metodÄ™ mutacji
+		crossoverMethod - wartoÅ›Ä‡ oznaczajÄ…ca wybranÄ… metodÄ™ mutacji
 */
 GeneticAlgorithm::GeneticAlgorithm(int** array, int N, int stop, int populationSize, double mutationVar, double crossoverVar, int mutationMethod, int crossoverMethod) {
 	this->array = array;
@@ -37,12 +37,12 @@ long long int GeneticAlgorithm::read_QPC() {
 	return ((long long int) count.QuadPart);
 }
 /*
-	Funkcja obliczaj¹ca koszt œcie¿ki.
+	Funkcja obliczajÄ…ca koszt Å›cieÅ¼ki.
 
-	Wejœcia:
-		path - œcie¿ka do obliczenia kosztu
-	Wyjœcie:
-		cost - koszt œcie¿ki
+	WejÅ›cia:
+		path - Å›cieÅ¼ka do obliczenia kosztu
+	WyjÅ›cie:
+		cost - koszt Å›cieÅ¼ki
 */
 int GeneticAlgorithm::calcPathCost(std::vector<int> path) {
 	int cost = 0;
@@ -53,8 +53,8 @@ int GeneticAlgorithm::calcPathCost(std::vector<int> path) {
 	return cost;
 }
 /*
-	Funkcja tworz¹ca pierwsz¹ populacjê.
-	Pocz¹tkowa populacji jest wielkoœci populationSize, a chromosomy s¹ losowe.
+	Funkcja tworzÄ…ca pierwszÄ… populacjÄ™.
+	PoczÄ…tkowa populacji jest wielkoÅ›ci populationSize, a chromosomy sÄ… losowe.
 */
 void GeneticAlgorithm::setStartPopulation(std::vector<pathInfo>& population) {
 	auto rng = std::default_random_engine{ rd() };
@@ -75,12 +75,12 @@ void GeneticAlgorithm::setStartPopulation(std::vector<pathInfo>& population) {
 	}
 }
 /*
-	Funkcja pomocnicza dla funkcji tournament, znajduj¹c¹ chromosom o najni¿szym koszcie.
+	Funkcja pomocnicza dla funkcji tournament, znajdujÄ…cÄ… chromosom o najniÅ¼szym koszcie.
 
-	Wejœcia:
-		sample - pula chromosomów
-	Wyjœcie:
-		index - indeks chromosomu o najkrótszym koszcie
+	WejÅ›cia:
+		sample - pula chromosomÃ³w
+	WyjÅ›cie:
+		index - indeks chromosomu o najkrÃ³tszym koszcie
 */
 int GeneticAlgorithm::minPathId(std::vector<pathInfo> sample) {
 	int min = INT_MAX;
@@ -98,17 +98,17 @@ int GeneticAlgorithm::minPathId(std::vector<pathInfo> sample) {
 /*
 	Funkcja selekcji turniejowej.
 
-	Wejœcia:
-		population - populacja zg³oszona do turnieju
-	Wa¿ne zmienne:
-		tournamentPool - pula chromosomów wybrania do turnieju
-		tournamentSize - wielkoœæ puli tournamentPool, wyznaczona na 20% wielkoœci populacji
-	Wyjœcia:
-		matingPool - koñcowa populacja wybrania do krzy¿owania
+	WejÅ›cia:
+		population - populacja zgÅ‚oszona do turnieju
+	WaÅ¼ne zmienne:
+		tournamentPool - pula chromosomÃ³w wybrania do turnieju
+		tournamentSize - wielkoÅ›Ä‡ puli tournamentPool, wyznaczona na 20% wielkoÅ›ci populacji
+	WyjÅ›cia:
+		matingPool - koÅ„cowa populacja wybrania do krzyÅ¼owania
 
-	Funkcja losowo wybiera chromosomy do turnieju, a nastêpnie wywo³uje funkcjê minPathId, która
-	zwraca indeks chromosomu o najni¿szym koszcie. Liczba wykonanych turniejów jest taka sama
-	jak wielkoœæ populacji.
+	Funkcja losowo wybiera chromosomy do turnieju, a nastÄ™pnie wywoÅ‚uje funkcjÄ™ minPathId, ktÃ³ra
+	zwraca indeks chromosomu o najniÅ¼szym koszcie. Liczba wykonanych turniejÃ³w jest taka sama
+	jak wielkoÅ›Ä‡ populacji.
 */
 std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector<pathInfo> population) {
 	auto rng = std::default_random_engine{ rd() };
@@ -132,33 +132,33 @@ std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector
 	return matingPool;
 }
 /*
-	Funkcja wykonuj¹ca metodê krzy¿owania PMX - Partially Mapped Crossover
+	Funkcja wykonujÄ…ca metodÄ™ krzyÅ¼owania PMX - Partially Mapped Crossover
 
-	Wejœcia:
-		parent1, parent2 - chromosomy wybrane do krzy¿owania
-	Wa¿ne zmienne:
-		random - zwraca losow¹ ca³kowit¹ liczbê z przedzia³u <0, N - 1>,
-			gdzie N - wielkoœæ tablicy s¹siedztwa
+	WejÅ›cia:
+		parent1, parent2 - chromosomy wybrane do krzyÅ¼owania
+	WaÅ¼ne zmienne:
+		random - zwraca losowÄ… caÅ‚kowitÄ… liczbÄ™ z przedziaÅ‚u <0, N - 1>,
+			gdzie N - wielkoÅ›Ä‡ tablicy sÄ…siedztwa
 		k1, k2 - losowe miasta
-		map1, map2 - struktura mapy dzia³aj¹ca jak tabela odwzorowañ (map2 jest odwrotnoœci¹ map1, czyli
-			klucze w map1 s¹ wartoœciami w map2 itp.)
-		child1Count, child2Count - struktura mapy oznaczaj¹ca ile razy miasto znajduje siê na œcie¿ce
+		map1, map2 - struktura mapy dziaÅ‚ajÄ…ca jak tabela odwzorowaÅ„ (map2 jest odwrotnoÅ›ciÄ… map1, czyli
+			klucze w map1 sÄ… wartoÅ›ciami w map2 itp.)
+		child1Count, child2Count - struktura mapy oznaczajÄ…ca ile razy miasto znajduje siÄ™ na Å›cieÅ¼ce
 			chromosomu potomnego
-	Wyjœcia:
-		child1, child2 - chromosomy potomne utworzone z krzy¿owania
+	WyjÅ›cia:
+		child1, child2 - chromosomy potomne utworzone z krzyÅ¼owania
 
-	Funkcja wykonuje siê wed³ug tego schematu:
-		1. Wylosowanie dwóch miast
-		2. Wykonanie transpozycji w podci¹gu od k1 do k2, dodanie elementów do tablicy odwzorowañ i odnotowanie
-			zmian licznoœci w child1Count i child2Count
-		3. Przepisanie z rodzica do potomka tych miast, które nie zosta³y wpisane w kroku 2
-		4. Dla miejsca w œcie¿ce, które nie maja jeszcze przypisanego miasta, wstawiamy miasto zgodnie z tabel¹ odwzorowañ
-		5. Je¿eli dodanie miasta oznacza³oby powstanie duplikatu w œcie¿ce, to ponownie wstawiane jest miasto zgodnie
-			z tabel¹ odwzorowañ
-		6. Wracaj do kroku 5, dopóki dodanie miasta nie oznacza utworzenia duplikatu
-		7. Wracaj do kroku 4, dopóki wszystkie miejsca w œcie¿ce nie bêd¹ mia³y przydzielonego miasta
-		8. Oblicz koszt utworzonych chromosomów potomnych
-		9. Zwróæ chromosomy potomne
+	Funkcja wykonuje siÄ™ wedÅ‚ug tego schematu:
+		1. Wylosowanie dwÃ³ch miast
+		2. Wykonanie transpozycji w podciÄ…gu od k1 do k2, dodanie elementÃ³w do tablicy odwzorowaÅ„ i odnotowanie
+			zmian licznoÅ›ci w child1Count i child2Count
+		3. Przepisanie z rodzica do potomka tych miast, ktÃ³re nie zostaÅ‚y wpisane w kroku 2
+		4. Dla miejsca w Å›cieÅ¼ce, ktÃ³re nie maja jeszcze przypisanego miasta, wstawiamy miasto zgodnie z tabelÄ… odwzorowaÅ„
+		5. JeÅ¼eli dodanie miasta oznaczaÅ‚oby powstanie duplikatu w Å›cieÅ¼ce, to ponownie wstawiane jest miasto zgodnie
+			z tabelÄ… odwzorowaÅ„
+		6. Wracaj do kroku 5, dopÃ³ki dodanie miasta nie oznacza utworzenia duplikatu
+		7. Wracaj do kroku 4, dopÃ³ki wszystkie miejsca w Å›cieÅ¼ce nie bÄ™dÄ… miaÅ‚y przydzielonego miasta
+		8. Oblicz koszt utworzonych chromosomÃ³w potomnych
+		9. ZwrÃ³Ä‡ chromosomy potomne
 */
 std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo> GeneticAlgorithm::crossoverPMX(pathInfo parent1, pathInfo parent2) {
 	auto rng = std::default_random_engine{ rd() };
@@ -263,16 +263,16 @@ std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo> GeneticAlgori
 	return { child1, child2 };
 }
 /*
-	Funkcja wykonuj¹ca metodê mutacji - inversion.
+	Funkcja wykonujÄ…ca metodÄ™ mutacji - inversion.
 
-	Wejœcia:
-		chromosome - chromosom, który ma zostaæ poddany mutacji
-	Wa¿ne zmienne:
-		random - zwraca losow¹ ca³kowit¹ liczbê z przedzia³u <0, N - 1>,
-			gdzie N - wielkoœæ tablicy s¹siedztwa
+	WejÅ›cia:
+		chromosome - chromosom, ktÃ³ry ma zostaÄ‡ poddany mutacji
+	WaÅ¼ne zmienne:
+		random - zwraca losowÄ… caÅ‚kowitÄ… liczbÄ™ z przedziaÅ‚u <0, N - 1>,
+			gdzie N - wielkoÅ›Ä‡ tablicy sÄ…siedztwa
 		k1, k2 - losowe miasta
 
-	Funkcja wybiera losowy podci¹g (od k1 do k2 ) miast i zamienia ich kolejnoœæ.
+	Funkcja wybiera losowy podciÄ…g (od k1 do k2 ) miast i zamienia ich kolejnoÅ›Ä‡.
 */
 void GeneticAlgorithm::mutationInversion(pathInfo& chromosome) {
 	auto rng = std::default_random_engine{ rd() };
@@ -299,13 +299,13 @@ void GeneticAlgorithm::mutationInversion(pathInfo& chromosome) {
 	chromosome.cost = calcPathCost(chromosome.path);
 }
 /*
-	Funkcja wykonuj¹ca metodê mutacji - transposition.
+	Funkcja wykonujÄ…ca metodÄ™ mutacji - transposition.
 
-	Wejœcia:
-		chromosome - chromosom, który ma zostaæ poddany mutacji
-	Wa¿ne zmienne:
-		random - zwraca losow¹ ca³kowit¹ liczbê z przedzia³u <0, N - 1>,
-			gdzie N - wielkoœæ tablicy s¹siedztwa
+	WejÅ›cia:
+		chromosome - chromosom, ktÃ³ry ma zostaÄ‡ poddany mutacji
+	WaÅ¼ne zmienne:
+		random - zwraca losowÄ… caÅ‚kowitÄ… liczbÄ™ z przedziaÅ‚u <0, N - 1>,
+			gdzie N - wielkoÅ›Ä‡ tablicy sÄ…siedztwa
 		k1, k2 - losowe miasta
 
 	Funkcja zamienia dwa losowo wybrane miasta miejscami.
@@ -333,11 +333,11 @@ void GeneticAlgorithm::mutationTransposition(pathInfo& chromosome) {
 	chromosome.cost = calcPathCost(chromosome.path);
 }
 /*
-	Funkcja zwraca najni¿szy koszt wœród chromosomów z populacji.
+	Funkcja zwraca najniÅ¼szy koszt wÅ›rÃ³d chromosomÃ³w z populacji.
 
-	Wejœcia:
-		population - populacja chromosomów
-	Wyjœcia:
+	WejÅ›cia:
+		population - populacja chromosomÃ³w
+	WyjÅ›cia:
 		min - minimalny koszt
 */
 int GeneticAlgorithm::findBest(std::vector<pathInfo> population) {
@@ -350,28 +350,28 @@ int GeneticAlgorithm::findBest(std::vector<pathInfo> population) {
 	return min;
 }
 /*
-	G³ówna funkcja programu.
+	GÅ‚Ã³wna funkcja programu.
 
-	Wa¿ne zmienne:
-		population - populacja chromosomów
-		newGeneration - nowa generacja chromosomów
-		parent1, parent2 - rodzice wybrani do krzy¿owania
-		child1, child2 - potomkowie otrzymani z krzy¿owania
-		randomReal - zwraca losow¹ rzeczywist¹ liczbê z zakresu <0, 1>
-		bestInGeneration - lista przechowuj¹ca wartoœci najmniejszych kosztów dla ka¿dej generacji
-	Wyjœcia:
-		bestInGeneration.back() - znaleziony przez algorytm najni¿szy koszt
+	WaÅ¼ne zmienne:
+		population - populacja chromosomÃ³w
+		newGeneration - nowa generacja chromosomÃ³w
+		parent1, parent2 - rodzice wybrani do krzyÅ¼owania
+		child1, child2 - potomkowie otrzymani z krzyÅ¼owania
+		randomReal - zwraca losowÄ… rzeczywistÄ… liczbÄ™ z zakresu <0, 1>
+		bestInGeneration - lista przechowujÄ…ca wartoÅ›ci najmniejszych kosztÃ³w dla kaÅ¼dej generacji
+	WyjÅ›cia:
+		bestInGeneration.back() - znaleziony przez algorytm najniÅ¼szy koszt
 
-	Funkcja wykonuje siê wed³ug tego schematu:
-		1. Utworzenie populacji pocz¹tkowych chromosomów
+	Funkcja wykonuje siÄ™ wedÅ‚ug tego schematu:
+		1. Utworzenie populacji poczÄ…tkowych chromosomÃ³w
 		2. Sprawdzenie warunku zatrzymania
-			2.1. Selekcja turniejowa chromosomów - wybranie populacji macierzystej
-				2.2.1. Krzy¿owanie losowych chromosomów (zale¿y od prawdopodobieñstwa w crossoverVal)
-				2.2.2. Mutacja otrzymanych chromosomów (zale¿y od prawdopodobieñstwa w mutationVal)
-				2.2.3. Wróæ do kroku 2.2.1 w populacji znajduj¹ siê jeszcze chromosomy do krzy¿owania
+			2.1. Selekcja turniejowa chromosomÃ³w - wybranie populacji macierzystej
+				2.2.1. KrzyÅ¼owanie losowych chromosomÃ³w (zaleÅ¼y od prawdopodobieÅ„stwa w crossoverVal)
+				2.2.2. Mutacja otrzymanych chromosomÃ³w (zaleÅ¼y od prawdopodobieÅ„stwa w mutationVal)
+				2.2.3. WrÃ³Ä‡ do kroku 2.2.1 w populacji znajdujÄ… siÄ™ jeszcze chromosomy do krzyÅ¼owania
 			2.2 Utworzenie nowej populacji
-			2.3 Powrót do kroku 2
-		3. Zwrócenie znalezionego najni¿szego kosztu
+			2.3 PowrÃ³t do kroku 2
+		3. ZwrÃ³cenie znalezionego najniÅ¼szego kosztu
 */
 int GeneticAlgorithm::findPath() {
 	long long int frequency, start;

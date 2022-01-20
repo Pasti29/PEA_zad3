@@ -1,7 +1,7 @@
 #include "ArrayClass.h"
 
 /*
-	Funkcja tworzy oraz wypełnia tabelę danymi z pliku
+	Funkcja tworzy oraz wypeĹ‚nia tabelÄ™ danymi z pliku
 */
 int** ArrayClass::createArrayFromFile(int** array, int& N) {
 	std::string fileName;
@@ -39,7 +39,7 @@ int** ArrayClass::createArrayFromFile(int** array, int& N) {
 	return array;
 }
 /*
-	Funkcja niszczy tabelę dynamiczną
+	Funkcja niszczy tabelÄ™ dynamicznÄ…
 */
 int** ArrayClass::destroyArray(int** array, int N) {
 	for (int i = 0; i < N; i++) {
@@ -49,7 +49,7 @@ int** ArrayClass::destroyArray(int** array, int N) {
 	return nullptr;
 }
 /*
-	Funkcja wyświetla macierz sąsiedztwa
+	Funkcja wyĹ›wietla macierz sÄ…siedztwa
 */
 void ArrayClass::showArray(int** array, int N) {
 	std::cout << "\nN = " << N << "\n\n";
