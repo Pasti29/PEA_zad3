@@ -62,5 +62,5 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 
-*.cpp	 working-tree-encoding=windows1250
-*.h		 working-tree-encoding=windows1250	
+*.cpp	 working-tree-encoding=windows-1250
+*.h		 working-tree-encoding=windows-1250	
