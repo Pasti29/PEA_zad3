@@ -27,7 +27,6 @@ GeneticAlgorithm::GeneticAlgorithm(int** array, int N, int stop, int populationS
 	Destruktor
 */
 GeneticAlgorithm::~GeneticAlgorithm() {
-
 }
 /*
 	Funkcja potrzebna do obliczania czasu.
@@ -410,7 +409,7 @@ int GeneticAlgorithm::findPath() {
 			if (randomReal() <= crossoverVar) {
 				std::tie(child1, child2) = crossoverPMX(parent1, parent2);
 				if (randomReal() <= mutationVar) {
-					mutationMethod == 1 ? mutationInversion(child1) : mutationTransposition(child1);		
+					mutationMethod == 1 ? mutationInversion(child1) : mutationTransposition(child1);
 				}
 				if (randomReal() <= mutationVar) {
 					mutationMethod == 1 ? mutationInversion(child2) : mutationTransposition(child2);
@@ -422,7 +421,6 @@ int GeneticAlgorithm::findPath() {
 		population = newGeneration;
 		oldPopulationSize = population.size();
 		newGeneration.clear();
-
 	}
 	return bestInGeneration.back();
 }

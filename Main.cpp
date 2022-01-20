@@ -13,7 +13,6 @@ int** ARRAY = nullptr;
 int N;
 
 int main() {
-
 	int option, stop = 30, populationSize = 100, mutationMethod = 1, crossoverMethod = 1;
 	double mutationVar = 0.01, crossoverVar = 0.8;
 
@@ -60,9 +59,9 @@ int main() {
 		case 6:
 			mutationMethod = Menu::showMutationMethodMenu(mutationMethod);
 			break;
-		//case 7:
-		//	crossoverMethod = Menu::showCrossoverMethodMenu(crossoverMethod);
-		//	break;
+			//case 7:
+			//	crossoverMethod = Menu::showCrossoverMethodMenu(crossoverMethod);
+			//	break;
 		case 8:
 			if (ARRAY == nullptr) {
 				std::cout << "\tNiezainicjalozowano tabeli.\n";

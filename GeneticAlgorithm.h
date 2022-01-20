@@ -22,7 +22,7 @@ private:
 	std::random_device rd;
 
 public:
-	GeneticAlgorithm(int **array, int N, int stop, int populationSize, double mutationVar, double crossoverVar, int mutationMethod, int crossoverMethod);
+	GeneticAlgorithm(int** array, int N, int stop, int populationSize, double mutationVar, double crossoverVar, int mutationMethod, int crossoverMethod);
 	~GeneticAlgorithm();
 
 private:
@@ -38,6 +38,4 @@ private:
 
 public:
 	int findPath();
-
 };
-

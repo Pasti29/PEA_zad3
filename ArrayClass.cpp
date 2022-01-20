@@ -3,7 +3,7 @@
 /*
 	Funkcja tworzy oraz wypełnia tabelę danymi z pliku
 */
-int **ArrayClass::createArrayFromFile(int **array, int &N) {
+int** ArrayClass::createArrayFromFile(int** array, int& N) {
 	std::string fileName;
 	std::string ignoredLines;
 	std::cout << "\tPodaj nazwe pliku (z rozszerzeniem): ";
@@ -11,7 +11,6 @@ int **ArrayClass::createArrayFromFile(int **array, int &N) {
 	std::ifstream file(fileName);
 	int var;
 	if (file.is_open()) {
-
 		for (int i = 0; i < 3; ++i) {
 			file.ignore(INT_MAX, '\n');
 		}
@@ -23,7 +22,7 @@ int **ArrayClass::createArrayFromFile(int **array, int &N) {
 		if (file.fail()) {
 			std::cout << "\tBlad pliku - ODCZYT DLUGOSCI\n";
 		} else {
-			array = new int *[N];
+			array = new int* [N];
 			for (int i = 0; i < N; i++) {
 				array[i] = new int[N];
 				for (int j = 0; j < N; j++) {
@@ -42,7 +41,7 @@ int **ArrayClass::createArrayFromFile(int **array, int &N) {
 /*
 	Funkcja niszczy tabelę dynamiczną
 */
-int **ArrayClass::destroyArray(int **array, int N) {
+int** ArrayClass::destroyArray(int** array, int N) {
 	for (int i = 0; i < N; i++) {
 		delete[] array[i];
 	}
@@ -54,7 +53,7 @@ int **ArrayClass::destroyArray(int **array, int N) {
 */
 void ArrayClass::showArray(int** array, int N) {
 	std::cout << "\nN = " << N << "\n\n";
-	for (int i = 0; i < N; i++) std:: cout << "-------";
+	for (int i = 0; i < N; i++) std::cout << "-------";
 	std::cout << "\n";
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {

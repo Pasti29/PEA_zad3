@@ -11,5 +11,4 @@ public:
 	static double showCrossoverVarMenu(double var);
 	static int showMutationMethodMenu(int var);
 	static int showCrossoverMethodMenu(int var);
-
 };

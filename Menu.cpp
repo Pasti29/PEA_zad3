@@ -57,8 +57,8 @@ double Menu::showCrossoverVarMenu(double var) {
 
 int Menu::showMutationMethodMenu(int var) {
 	std::cout << "Metoda mutacji (obecnie " << var << "):\n"
-		 << "\t1. inversion - wybiera losowy podciagi miast i zamienia ich kolejnosc\n"
-		 << "\t2. transposition - zamienia dwa losowo wybrane miasta\n\t";
+		<< "\t1. inversion - wybiera losowy podciagi miast i zamienia ich kolejnosc\n"
+		<< "\t2. transposition - zamienia dwa losowo wybrane miasta\n\t";
 	std::cin >> var;
 	std::cout << "\t";
 	system("pause");
