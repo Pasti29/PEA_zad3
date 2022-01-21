@@ -26,15 +26,15 @@ int Menu::showMainMenu() {
 int Menu::showStopMenu(int var) {
 	std::cout << "\tStop [s] (obecnie " << var << " [s]): ";
 	std::cin >> var;
-	std::cout << "\t";
-	system("pause");
+	//std::cout << "\t";
+	//system("pause");
 	return var;
 }
 
 int Menu::showPopulationMenu(int var) {
 	std::cout << "Wielkosc populacji (obecnie " << var << "): ";
 	std::cin >> var;
-	std::cout << "\t";
+	//std::cout << "\t";
 	//system("pause");
 	return var;
 }
@@ -42,16 +42,16 @@ int Menu::showPopulationMenu(int var) {
 double Menu::showMutationVarMenu(double var) {
 	std::cout << "Wspolczynnik mutacji (obecnie " << var << "): ";
 	std::cin >> var;
-	std::cout << "\t";
-	system("pause");
+	//std::cout << "\t";
+	//system("pause");
 	return var;
 }
 
 double Menu::showCrossoverVarMenu(double var) {
 	std::cout << "Wspolczynnik krzyzowania (obecnie " << var << "): ";
 	std::cin >> var;
-	std::cout << "\t";
-	system("pause");
+	//std::cout << "\t";
+	//system("pause");
 	return var;
 }
 
@@ -60,8 +60,8 @@ int Menu::showMutationMethodMenu(int var) {
 		<< "\t1. inversion - wybiera losowy podciagi miast i zamienia ich kolejnosc\n"
 		<< "\t2. transposition - zamienia dwa losowo wybrane miasta\n\t";
 	std::cin >> var;
-	std::cout << "\t";
-	system("pause");
+	//std::cout << "\t";
+	//system("pause");
 	return var;
 }
 
@@ -70,7 +70,7 @@ int Menu::showCrossoverMethodMenu(int var) {
 		<< "\t1. PMX\n"
 		<< "\t2.\n\t";
 	std::cin >> var;
-	std::cout << "\t";
-	system("pause");
+	//std::cout << "\t";
+	//system("pause");
 	return var;
 }

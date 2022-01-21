@@ -103,28 +103,32 @@ int GeneticAlgorithm::minPathId(std::vector<pathInfo> sample) {
 		population - populacja zgłoszona do turnieju
 	Ważne zmienne:
 		tournamentPool - pula osobników wybrania do turnieju
-		tournamentSize - wielkość puli tournamentPool, wyznaczona na 20% wielkości populacji
+		tournamentSize - wielkość puli tournamentPool, wyznaczona na 2% wielkości populacji
 	Wyjścia:
 		matingPool - końcowa populacja wybrania do krzyżowania
 
 	Funkcja losowo wybiera osobników do turnieju, a następnie wywołuje funkcję minPathId, która zwraca indeks osobnika o najniższym koszcie. Liczba wykonanych turniejów jest taka sama
 	jak wielkość populacji.
 */
-std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector<pathInfo> population) {
+std::vector<GeneticAlgorithm::pathInfo>
+	GeneticAlgorithm::tournament(std::vector<pathInfo> population) {
+
 	auto rng = std::default_random_engine{ rd() };
 
 	std::vector<pathInfo> matingPool;
 	matingPool.reserve(population.size());
 
 	std::vector<pathInfo> tournamentPool;
-	int tournamentSize = 20 * population.size() / 100;
-	if (tournamentSize <= 1)
-		return population;
+	int tournamentSize = 2 * population.size() / 100;
 	tournamentPool.reserve(tournamentSize);
 
 	for (int i = 0; i < population.size(); i++) {
 		tournamentPool.clear();
-		std::sample(population.begin(), population.end(), std::back_inserter(tournamentPool), tournamentSize, rng);
+		std::sample(population.begin(),
+				 	population.end(),
+					std::back_inserter(tournamentPool),
+					tournamentSize,
+					rng);
 		int minId = minPathId(tournamentPool);
 		matingPool.push_back(tournamentPool[minId]);
 	}
@@ -158,7 +162,9 @@ std::vector<GeneticAlgorithm::pathInfo> GeneticAlgorithm::tournament(std::vector
 		8. Oblicz koszt utworzonych osobników potomnych
 		9. Zwróć osobniki potomne
 */
-std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo> GeneticAlgorithm::crossoverPMX(pathInfo parent1, pathInfo parent2) {
+std::tuple<GeneticAlgorithm::pathInfo, GeneticAlgorithm::pathInfo>
+	GeneticAlgorithm::crossoverPMX(pathInfo parent1, pathInfo parent2) {
+
 	auto rng = std::default_random_engine{ rd() };
 	std::uniform_int_distribution<int> distrubution(0, N - 1);
 	auto random = bind(distrubution, rng);
@@ -338,14 +344,16 @@ void GeneticAlgorithm::mutationTransposition(pathInfo& individual) {
 	Wyjścia:
 		min - minimalny koszt
 */
-int GeneticAlgorithm::findBest(std::vector<pathInfo> population) {
+GeneticAlgorithm::pathInfo GeneticAlgorithm::findBest(std::vector<pathInfo> population) {
+	pathInfo m;
 	int min = INT_MAX;
 	for (pathInfo route : population) {
 		if (min > route.cost) {
+			m = route;
 			min = route.cost;
 		}
 	}
-	return min;
+	return m;
 }
 /*
 	Główna funkcja programu.
@@ -388,11 +396,8 @@ int GeneticAlgorithm::findPath() {
 	std::uniform_real_distribution<> distribution(0, 1);
 	auto randomReal = bind(distribution, rng);
 
-	std::list<int> bestInGeneration;
-
 	start = read_QPC();
-	while ((read_QPC() - start) / frequency < stop && population.size() >= 2) {
-		bestInGeneration.push_back(findBest(population));
+	while ((read_QPC() - start) / frequency < stop) {
 
 		population = tournament(population);
 
@@ -405,20 +410,30 @@ int GeneticAlgorithm::findPath() {
 			population.erase(population.begin() + index);
 
 			if (randomReal() <= crossoverVar) {
-				std::tie(child1, child2) = crossoverPMX(parent1, parent2);
-				if (randomReal() <= mutationVar) {
-					mutationMethod == 1 ? mutationInversion(child1) : mutationTransposition(child1);
-				}
-				if (randomReal() <= mutationVar) {
-					mutationMethod == 1 ? mutationInversion(child2) : mutationTransposition(child2);
-				}
-				newGeneration.push_back(child1);
-				newGeneration.push_back(child2);
+				std::tie(child1, child2) = crossoverPMX(parent1, parent2);	
+			} else {
+				child1 = parent1;
+				child2 = parent2;
 			}
-		} while (population.size() >= 2);
+			if (randomReal() <= mutationVar) {
+				mutationMethod == 1 ? mutationInversion(child1) : mutationTransposition(child1);
+			}
+			if (randomReal() <= mutationVar) {
+				mutationMethod == 1 ? mutationInversion(child2) : mutationTransposition(child2);
+			}
+			newGeneration.push_back(child1);
+			newGeneration.push_back(child2);
+		} while (population.size() > 0);
 		population = newGeneration;
 		oldPopulationSize = population.size();
 		newGeneration.clear();
 	}
-	return bestInGeneration.back();
+	pathInfo bestInLastGeneration = findBest(population);
+	std::cout << "Koszt: " << bestInLastGeneration.cost << "\n";
+	std::cout << "Sciezka = ";
+	for (int i = 0; i < N; ++i) {
+		std::cout << bestInLastGeneration.path[i] << " ";
+	}
+	std::cout << "\n";
+	return bestInLastGeneration.cost;
 }

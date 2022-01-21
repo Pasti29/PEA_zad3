@@ -34,7 +34,7 @@ private:
 	std::tuple<pathInfo, pathInfo> crossoverPMX(pathInfo parent1, pathInfo parent2);
 	void mutationInversion(pathInfo& individual);
 	void mutationTransposition(pathInfo& individual);
-	int findBest(std::vector<pathInfo> population);
+	pathInfo findBest(std::vector<pathInfo> population);
 
 public:
 	int findPath();

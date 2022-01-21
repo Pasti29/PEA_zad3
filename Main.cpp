@@ -40,9 +40,9 @@ int main() {
 				ARRAY = ArrayClass::destroyArray(ARRAY, N);
 			}
 			ARRAY = ArrayClass::createArrayFromFile(ARRAY, N);
-			ArrayClass::showArray(ARRAY, N);
-			std::cout << "\t";
-			system("pause");
+			//ArrayClass::showArray(ARRAY, N);
+			//std::cout << "\t";
+			//system("pause");
 			break;
 		case 2:
 			stop = Menu::showStopMenu(stop);
@@ -67,12 +67,14 @@ int main() {
 				std::cout << "\tNiezainicjalozowano tabeli.\n";
 				system("pause");
 			} else {
+				int best;
 				for (int i = 0; i < 10; i++) {
 					fileResult << i + 1 << "," << N << "," << populationSize << "," << stop << "," << mutationVar << "," << crossoverVar << "," << mutationMethod << "," << crossoverMethod;
 					GeneticAlgorithm ga(ARRAY, N, stop, populationSize, mutationVar, crossoverVar, mutationMethod, crossoverMethod);
-					int best = ga.findPath();
+					best = ga.findPath();
 					fileResult << "," << best << std::endl;
 				}
+				system("pause");
 			}
 			break;
 		case 9:
